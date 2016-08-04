@@ -1,7 +1,7 @@
 # Личный проект «Код и Магия» [![Build status][travis-image]][travis-url] [![Dependency status][dependency-image]][dependency-url]
 
 * Студент: [Ольга Григорьева](https://up.htmlacademy.ru/javascript/6/user/25493).
-* Наставник: `Неизвестно`.
+* Наставник: [Евгений Щепотьев] (https://htmlacademy.ru/profile/id125753).
 
 ---
 
