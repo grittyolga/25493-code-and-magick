@@ -390,23 +390,45 @@ window.Game = (function() {
         window.removeEventListener('keydown', this._pauseListener);
       }
     },
-
+    /*
+    Функция рисует прямоугольник
+    */
+    _drawSquare: function(message) {
+      var x = 150;
+      var y = 80;
+      var width = 250;
+      var height = 100;
+      this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
+      this.ctx.fillRect(x + 10, y + 10, width, height);
+      this.ctx.fillStyle = '#FFFFFF';
+      this.ctx.fillRect(x, y, width, height);
+      this.ctx.font = '16px PT Mono';
+      this.ctx.textBaseline = 'hanging';
+      this.ctx.fillStyle = '#000000';
+      for (var i = 0; i < message.length; i++) {
+        this.ctx.fillText(message[i], x + 20, y + 40 + 15 * i);
+      }
+    },
     /**
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          console.log('you have won!');
+          var messageWin = [ 'Congratulations', 'you have won!'];
+          this._drawSquare(messageWin);
           break;
         case Verdict.FAIL:
-          console.log('you have failed!');
+          var messageFail = ['You have failed!', 'Looser'];
+          this._drawSquare(messageFail);
           break;
         case Verdict.PAUSE:
-          console.log('game is on pause!');
+          var messagePause = ['Game is on pause', 'Drink a tea'];
+          this._drawSquare(messagePause);
           break;
         case Verdict.INTRO:
-          console.log('welcome to the game! Press Space to start');
+          var messageIntro = [ 'Welcome, friend.', 'Press Space to start'];
+          this._drawSquare(messageIntro);
           break;
       }
     },
