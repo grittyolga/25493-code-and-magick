@@ -393,42 +393,65 @@ window.Game = (function() {
     /*
     Функция рисует прямоугольник
     */
-    _drawSquare: function(message) {
+    _drawSquare: function(message, width) {
+      var lineHeight = 20;
+      var height = (message.length + 1) * lineHeight;
+      var border = 10;
       var x = 150;
       var y = 80;
-      var width = 250;
-      var height = 100;
+
       this.ctx.fillStyle = 'rgba(0, 0, 0, 0.7)';
-      this.ctx.fillRect(x + 10, y + 10, width, height);
+      this.ctx.fillRect(x + 10, y + 10, width + 2 * border, height);
       this.ctx.fillStyle = '#FFFFFF';
-      this.ctx.fillRect(x, y, width, height);
-      this.ctx.font = '16px PT Mono';
-      this.ctx.textBaseline = 'hanging';
+      this.ctx.fillRect(x, y, width + 2 * border, height);
       this.ctx.fillStyle = '#000000';
       for (var i = 0; i < message.length; i++) {
-        this.ctx.fillText(message[i], x + 20, y + 40 + 15 * i);
+        this.ctx.fillText(message[i], x + border, y + 0.5 * lineHeight + lineHeight * i);
       }
+    },
+    /*
+    Функция принимает на вход текст и ширину, в которую его нужно вписать и автоматически переносит нужные строки.
+    */
+    _drawSquareFitText: function(message, width) {
+      var words = message.split(' ');
+      var output = words[0];
+      var result = [];
+      this.ctx.font = '16px PT Mono';
+      this.ctx.textBaseline = 'hanging';
+
+      for (var i = 1; i < words.length; i++) {
+        var test = output + ' ' + words[i];
+        if (this.ctx.measureText(test).width < width) {
+          output = test;
+        } else {
+          result.push(output);
+          output = words[i];
+        }
+      }
+      result.push(output);
+      this._drawSquare(result, width);
     },
     /**
      * Отрисовка экрана паузы.
      */
     _drawPauseScreen: function() {
+      var width = 200;
       switch (this.state.currentStatus) {
         case Verdict.WIN:
-          var messageWin = [ 'Congratulations', 'you have won!'];
-          this._drawSquare(messageWin);
+          var messageWin = 'Congratulations you have won!';
+          this._drawSquareFitText(messageWin, width);
           break;
         case Verdict.FAIL:
-          var messageFail = ['You have failed!', 'Looser'];
-          this._drawSquare(messageFail);
+          var messageFail = 'You have failed! Looser';
+          this._drawSquareFitText(messageFail, width);
           break;
         case Verdict.PAUSE:
-          var messagePause = ['Game is on pause', 'Drink a tea'];
-          this._drawSquare(messagePause);
+          var messagePause = 'Game is on pause. Drink a tea';
+          this._drawSquareFitText(messagePause, width);
           break;
         case Verdict.INTRO:
-          var messageIntro = [ 'Welcome, friend.', 'Press Space to start'];
-          this._drawSquare(messageIntro);
+          var messageIntro = 'Welcome, friend. Press Space to start';
+          this._drawSquareFitText(messageIntro, width);
           break;
       }
     },
