@@ -3,6 +3,9 @@
 window.form = (function() {
   var formContainer = document.querySelector('.overlay-container');
   var formCloseButton = document.querySelector('.review-form-close');
+  var formReview = document.querySelector('#review-text');
+  var formAddReviewButton = document.querySelector('.review-submit');
+  var formMark = document.getElementsByName('review-mark');
 
   var form = {
     onClose: null,
@@ -23,7 +26,16 @@ window.form = (function() {
       }
     }
   };
-
+  for (var i = 0; i < formMark.length; i++) {
+    var mark = formMark[i];
+    mark.onchange = function() {
+      if (this.value < 3) {
+        formReview.required = true;
+      } else {
+        formReview.required = false;
+      }
+    };
+  }
 
   formCloseButton.onclick = function(evt) {
     evt.preventDefault();
