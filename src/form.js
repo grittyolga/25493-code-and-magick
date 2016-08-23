@@ -11,10 +11,10 @@ window.form = (function() {
   var formTextLink = document.querySelector('.review-fields-text');
   var formReviewFields = document.querySelector('.review-fields');
   var stars = 3;
+  var browserCookies = require('browser-cookies');
 
   var form = {
     onClose: null,
-
     /**
      * @param {Function} cb
      */
@@ -29,6 +29,18 @@ window.form = (function() {
       if (typeof this.onClose === 'function') {
         this.onClose();
       }
+
+      var today = new Date();
+      var graceHopper = new Date(today.getFullYear(), 11, 9);
+      var cookieDays = (today - graceHopper) / 1000 / 60 / 60 / 24;
+      if (cookieDays < 0) {
+        graceHopper.setFullYear(today.getFullYear() - 1);
+        cookieDays = (today - graceHopper) / 1000 / 60 / 60 / 24;
+      }
+
+      cookieDays = parseInt(cookieDays, 10);
+      browserCookies.set('review-mark', stars, {expires: cookieDays});
+      browserCookies.set('review-name', formName.value, {expires: cookieDays});
     },
 
     validate: function() {
@@ -72,6 +84,10 @@ window.form = (function() {
       }
     }
   };
+
+  stars = browserCookies.get('review-mark') || 3;
+  formMark[formMark.length - stars].checked = true;
+  formName.value = browserCookies.get('review-name') || '';
 
   form.validate();
 
