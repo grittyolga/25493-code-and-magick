@@ -38,7 +38,7 @@ window.form = (function() {
         cookieDays = (today - graceHopper) / 1000 / 60 / 60 / 24;
       }
 
-      cookieDays = parseInt(cookieDays, 10);
+      cookieDays = Math.floor(cookieDays);
       browserCookies.set('review-mark', stars, {expires: cookieDays});
       browserCookies.set('review-name', formName.value, {expires: cookieDays});
     },
