@@ -1,6 +1,15 @@
 'use strict';
 
-module.exports = function(data, elementToClone, container) {
+var templateElement = document.querySelector('#review-template');
+var elementToClone;
+
+if ('content' in templateElement) {
+  elementToClone = templateElement.content.querySelector('.review');
+} else {
+  elementToClone = templateElement.querySelector('.review');
+}
+
+module.exports = function(data, container) {
 
   var element = elementToClone.cloneNode(true);
 
