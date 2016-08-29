@@ -2,6 +2,7 @@
 require('./form');
 require('./game');
 require('./reviews');
+var Gallery = require('./gallery');
 
 (function() {
   var game = new window.Game(document.querySelector('.demo'));
@@ -23,4 +24,17 @@ require('./reviews');
   window.form.onClose = function() {
     game.setDeactivated(false);
   };
+
+  /* обрабатываем галерею */
+  var gallery = new Gallery();
+  var allImages = document.querySelectorAll('.photogallery-image');
+  for (var i = 0; i < allImages.length; i++) {
+    // замыкание, чтобы num была правильная
+    (function(num) {
+      allImages[num].onclick = function() {
+        gallery.show(num);
+      };
+    })(i);
+  }
+
 })();
