@@ -26,8 +26,14 @@ var Gallery = require('./gallery');
   };
 
   /* обрабатываем галерею */
-  var gallery = new Gallery();
   var allImages = document.querySelectorAll('.photogallery-image');
+  var pictures = [];
+  for (var j = 0; j < allImages.length; j++) {
+    pictures.push(allImages[j].querySelector('img').src);
+  }
+
+  var gallery = new Gallery(pictures);
+
   for (var i = 0; i < allImages.length; i++) {
     // замыкание, чтобы num была правильная
     (function(num) {
