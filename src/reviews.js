@@ -1,6 +1,6 @@
 'use strict';
 var load = require('./load');
-var getReviewElement = require('./review');
+var Review = require('./review');
 
 window.reviews = (function() {
 
@@ -8,10 +8,10 @@ window.reviews = (function() {
   var reviewsList = document.querySelector('.reviews-list');
 
   var reviews = {
-
     receiveReviews: function(receivedReviews) {
       receivedReviews.forEach(function(review) {
-        getReviewElement(review, reviewsList);
+        var reviewElement = new Review(review);
+        reviewsList.appendChild(reviewElement.element);
       });
 
       reviewsFilter.classList.remove('invisible');
