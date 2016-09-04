@@ -50,8 +50,7 @@ window.reviews = (function() {
 
       reviewsFilter.addEventListener('change', function(evt) {
         self.changeFilter(evt.target.id);
-
-      });
+      }, true);
     }
   };
 
