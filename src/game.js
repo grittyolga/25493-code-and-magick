@@ -13,6 +13,8 @@ window.Game = (function() {
    */
   var WIDTH = 700;
 
+  var THROTTLE_TIMEOUT = 100;
+
   /**
    * ID уровней.
    * @enum {number}
@@ -258,6 +260,25 @@ window.Game = (function() {
     this._pauseListener = this._pauseListener.bind(this);
 
     this.setDeactivated(false);
+
+    this.clouds = document.querySelector('.header-clouds');
+    this.clouds.style.backgroundPosition = window.scrollY + 'px 0';
+
+    var lastCall = Date.now();
+
+    var self = this;
+    window.addEventListener('scroll', function() {
+      if (Date.now() - lastCall >= THROTTLE_TIMEOUT) {
+        if (self.clouds.getBoundingClientRect().bottom > 0) {
+          self.clouds.style.backgroundPosition = window.scrollY + 'px 0';
+        }
+        if (self.container.getBoundingClientRect().bottom <= 0) {
+          self.setGameStatus(Game.Verdict.PAUSE);
+        }
+        lastCall = Date.now();
+      }
+
+    });
   };
 
   Game.prototype = {
