@@ -9,7 +9,8 @@ window.reviews = (function() {
   var reviewsMore = document.querySelector('.reviews-controls-more');
   var currentPageNumber = 0;
   var pageSize = 3;
-  var filter = 'reviews-all';
+  var filter = localStorage.getItem('filter') || 'reviews-all';
+
 
   var reviews = {
     receiveReviews: function(receivedReviews) {
@@ -32,11 +33,13 @@ window.reviews = (function() {
     changeFilter: function(filterID) {
       reviewsList.innerHTML = '';
       filter = filterID;
+      localStorage.setItem('filter', filter);
       currentPageNumber = 0;
       this.updateReviews();
     },
 
     init: function() {
+      document.querySelector('#' + filter).checked = true;
       this.updateReviews();
       reviewsFilter.classList.add('invisible');
       reviewsMore.classList.remove('invisible');
