@@ -16,21 +16,9 @@ var Gallery = function(pictures) {
 
 Gallery.prototype = {
   show: function(numberPicture) {
-    var self = this;
-    this.conrolLeft.onclick = function() {
-      if (self.activePicture > 0) {
-        self.setActivePicture(self.activePicture - 1);
-      }
-
-    };
-    this.conrolRight.onclick = function() {
-      if (self.activePicture < self.pictures.length - 1) {
-        self.setActivePicture(self.activePicture + 1);
-      }
-    };
-    this.galleryClose.onclick = function() {
-      self.hide();
-    };
+    this.conrolLeft.onclick = this.conrolLeftClick.bind(this);
+    this.conrolRight.onclick = this.controlRightClick.bind(this);
+    this.galleryClose.onclick = this.hide.bind(this);
     this.overlayGallery.classList.remove('invisible');
     this.setActivePicture(numberPicture);
   },
@@ -55,6 +43,16 @@ Gallery.prototype = {
     this.galleryPreview.appendChild(image);
 
     this.numberCurrent.textContent = this.activePicture + 1;
+  },
+  conrolLeftClick: function() {
+    if (this.activePicture > 0) {
+      this.setActivePicture(this.activePicture - 1);
+    }
+  },
+  controlRightClick: function() {
+    if (this.activePicture < this.pictures.length - 1) {
+      this.setActivePicture(this.activePicture + 1);
+    }
   }
 };
 
