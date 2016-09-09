@@ -19,27 +19,15 @@ var Review = function(data) {
 
 Review.prototype = {
   generateReview: function() {
-    var self = this;
 
-    this.reviewQuizYes.onclick = function() {
-      self.reviewQuizYes.classList.add('review-quiz-answer-active');
-      self.reviewQuizNo.classList.remove('review-quiz-answer-active');
-    };
-    this.reviewQuizNo.onclick = function() {
-      self.reviewQuizNo.classList.add('review-quiz-answer-active');
-      self.reviewQuizYes.classList.remove('review-quiz-answer-active');
-    };
+    this.reviewQuizYes.onclick = this.reviewQuizYesClick.bind(this);
+    this.reviewQuizNo.onclick = this.reviewQuizNoClick.bind(this);
 
     var authorImage = new Image(124, 124);
 
-    authorImage.onload = function(evt) {
-      var img = self.element.querySelector('.review-author');
-      img.src = evt.target.src;
-    };
+    authorImage.onload = this.authorImageLoad.bind(this);
 
-    authorImage.onerror = function() {
-      self.element.classList.add('review-load-failure');
-    };
+    authorImage.onerror = this.authorImageError.bind(this);
 
     authorImage.src = this.data.author.picture;
 
@@ -64,6 +52,25 @@ Review.prototype = {
     this.reviewQuizYes.onclick = null;
     this.reviewQuizNo.onclickk = null;
   },
+
+  reviewQuizYesClick: function() {
+    this.reviewQuizYes.classList.add('review-quiz-answer-active');
+    this.reviewQuizNo.classList.remove('review-quiz-answer-active');
+  },
+
+  reviewQuizNoClick: function() {
+    this.reviewQuizNo.classList.add('review-quiz-answer-active');
+    this.reviewQuizYes.classList.remove('review-quiz-answer-active');
+  },
+
+  authorImageLoad: function(evt) {
+    var img = this.element.querySelector('.review-author');
+    img.src = evt.target.src;
+  },
+
+  authorImageError: function() {
+    this.element.classList.add('review-load-failure');
+  }
 };
 
 module.exports = Review;

@@ -264,21 +264,9 @@ window.Game = (function() {
     this.clouds = document.querySelector('.header-clouds');
     this.clouds.style.backgroundPosition = window.scrollY + 'px 0';
 
-    var lastCall = Date.now();
+    this.lastCall = Date.now();
 
-    var self = this;
-    window.addEventListener('scroll', function() {
-      if (Date.now() - lastCall >= THROTTLE_TIMEOUT) {
-        if (self.clouds.getBoundingClientRect().bottom > 0) {
-          self.clouds.style.backgroundPosition = window.scrollY + 'px 0';
-        }
-        if (self.container.getBoundingClientRect().bottom <= 0) {
-          self.setGameStatus(Game.Verdict.PAUSE);
-        }
-        lastCall = Date.now();
-      }
-
-    });
+    window.addEventListener('scroll', this.onScroll.bind(this));
   };
 
   Game.prototype = {
@@ -757,6 +745,18 @@ window.Game = (function() {
     _removeGameListeners: function() {
       window.removeEventListener('keydown', this._onKeyDown);
       window.removeEventListener('keyup', this._onKeyUp);
+    },
+
+    onScroll: function() {
+      if (Date.now() - this.lastCall >= THROTTLE_TIMEOUT) {
+        if (this.clouds.getBoundingClientRect().bottom > 0) {
+          this.clouds.style.backgroundPosition = window.scrollY + 'px 0';
+        }
+        if (this.container.getBoundingClientRect().bottom <= 0) {
+          this.setGameStatus(Game.Verdict.PAUSE);
+        }
+        this.lastCall = Date.now();
+      }
     }
   };
 

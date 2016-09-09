@@ -44,16 +44,17 @@ window.reviews = (function() {
       reviewsFilter.classList.add('invisible');
       reviewsMore.classList.remove('invisible');
 
-      var self = this;
+      reviewsMore.onclick = this.reviewsMoreClick.bind(this);
 
-      reviewsMore.onclick = function() {
-        currentPageNumber++;
-        self.updateReviews();
-      };
+      reviewsFilter.addEventListener('change', this.reviewsFilterChange.bind(this), true);
+    },
 
-      reviewsFilter.addEventListener('change', function(evt) {
-        self.changeFilter(evt.target.id);
-      }, true);
+    reviewsMoreClick: function() {
+      currentPageNumber++;
+      this.updateReviews();
+    },
+    reviewsFilterChange: function(evt) {
+      this.changeFilter(evt.target.id);
     }
   };
 
